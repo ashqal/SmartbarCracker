@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartbarCracker</string>
+    <string name="crack">去掉smartbar</string>
+    <string name="restore">恢复smartbar</string>
+    <string name="action_settings">Settings</string>
+    <string name="version_unknown">未知版本号</string>
+    <string name="author">ashqal</string>
+</resources>
