@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SmartbarCracker</string>
+    <string name="app_name">Smart</string>
     <string name="crack">去掉smartbar</string>
     <string name="restore">恢复smartbar</string>
     <string name="action_settings">Settings</string>

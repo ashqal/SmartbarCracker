@@ -16,13 +16,6 @@
         android:layout_height="wrap_content"
         android:onClick="onCracker"
         />
-    <Button
-        android:id="@+id/restoreBtn"
-        android:text="@string/restore"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onRestore"
-        />
     <TextView
         android:layout_weight="1"
         android:layout_width="fill_parent"
