@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 
 import java.io.DataOutputStream;
 import java.lang.reflect.Field;
@@ -23,7 +24,7 @@ import java.util.List;
 public class SmartBarUtils {
 
 
-    public static boolean IsFrameworkSport(Activity context,String app)
+    public static boolean IsFrameworkSupport(Activity context,String app)
     {
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
@@ -43,8 +44,8 @@ public class SmartBarUtils {
         {
             Window windows = context.getWindow();
             testIfNull(windows,"context.getWindow() failed");
-           // Log.e("ashqal.smartbar.Xposed","windows:" + windows);
-           // Log.e("ashqal.smartbar.Xposed","windows.hasFeature:" + windows.hasFeature(Window.FEATURE_ACTION_BAR));
+            //Log.e("ashqal.smartbar.Xposed","windows:" + windows);
+            //Log.e("ashqal.smartbar.Xposed","windows.hasFeature:" + windows.hasFeature(Window.FEATURE_ACTION_BAR));
             if( !windows.hasFeature(Window.FEATURE_ACTION_BAR) )
             {
                 View decorView = windows.getDecorView();
@@ -59,21 +60,25 @@ public class SmartBarUtils {
         }
     }
 
-    public static void Hook(final Activity context,Menu menu)
+    public static void HasActionBarHook(final Activity context,Menu menu)
     {
         try
         {
+
             ActionBar a = context.getActionBar();
             testIfNull(a,"context.getActionBar() failed");
 
             Object mActionView =  SmartBarUtils.GetFieldValue(a, "mActionView");
             testIfNull(mActionView,"get mActionView failed");
 
-            View mSplitView = (View) SmartBarUtils.GetFieldValue(mActionView, "mSplitView");
+            FrameLayout mSplitView = (FrameLayout) SmartBarUtils.GetFieldValue(mActionView, "mSplitView");
             testIfNull(mSplitView,"get mSplitView failed");
 
             Window windows = context.getWindow();
             testIfNull(windows,"context.getWindow() failed");
+
+            View decorView = windows.getDecorView();
+            testIfNull(decorView,"windows.getDecorView() failed");
 
             Object mUiOptions = SmartBarUtils.GetFieldValue(windows, "mUiOptions");
             testIfNull(mUiOptions,"get windows mUiOptions failed");
@@ -86,19 +91,9 @@ public class SmartBarUtils {
             }
             else
             {
-                if( menu != null && menu.size() > 0  )
+                if( menu != null && menu.size() > 0   )
                 {
                     isNeedHide = false;
-                    /*
-                    for ( int i = 0 ; i < menu.size() ; i++ )
-                    {
-                        android.view.MenuItem item = menu.getItem(i);
-                        Log.w("ashqal.smartbar.Xposed","\nitem[" + i + "]" + item.getTitle()
-                                        + ",collapseActionView=" + item.collapseActionView()
-                                        + ",expandActionView=" + item.expandActionView()
-                        );
-                    }
-                    */
                 }
                 else
                 {
@@ -107,12 +102,17 @@ public class SmartBarUtils {
 
             }
 
+            //Log.e("com.ashqal.smartbar.Xposed","mSplitView child count:" + mSplitView.getChildCount());
             if( isNeedHide )
             {
-                mSplitView.setVisibility(View.GONE);
-                View decorView = windows.getDecorView();
-                SmartBarUtils.Hide(decorView);
+                SmartBarUtils.HideV2(mSplitView);
+                //SmartBarUtils.Hide(decorView);
             }
+            else
+            {
+                SmartBarUtils.ShowV2(a);
+            }
+
 
 
         }
@@ -127,25 +127,39 @@ public class SmartBarUtils {
         if( obj == null ) throw new NullPointerException(error);
     }
 
+    public static void HideV2(FrameLayout mSplitView)
+    {
+
+        mSplitView.setVisibility(View.GONE);
+
+        for (int i = 0; i < mSplitView.getChildCount() ; i++)
+        {
+            mSplitView.getChildAt(i).setVisibility(View.GONE);
+        }
+    }
+
+    public static void ShowV2(ActionBar actionBar)
+    {
+        Object mActionView =  SmartBarUtils.GetFieldValue(actionBar, "mActionView");
+        testIfNull(mActionView,"get mActionView failed");
+
+        FrameLayout mSplitView = (FrameLayout) SmartBarUtils.GetFieldValue(mActionView, "mSplitView");
+        testIfNull(mSplitView,"get mSplitView failed");
+        mSplitView.setVisibility(View.VISIBLE);
+
+        for (int i = 0; i < mSplitView.getChildCount() ; i++)
+        {
+            mSplitView.getChildAt(i).setVisibility(View.VISIBLE);
+        }
+    }
 
     public static void Hide(View decorView) {
-        if(!HasSmartBar())
+        try
         {
-            return;
+            decorView.setSystemUiVisibility( View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
         }
-        try {
-            Class[] arrayOfClass = new Class[0x1];
-            arrayOfClass[0x0] = Integer.TYPE;
-            Method localMethod = View.class.getMethod("setSystemUiVisibility", arrayOfClass);
-            Field localField = View.class.getField("SYSTEM_UI_FLAG_HIDE_NAVIGATION");
-            Object[] arrayOfObject = new Object[0x1];
-            try {
-                arrayOfObject[0x0] = localField.get(0x0);
-            } catch(Exception localException1) {
-            }
-            localMethod.invoke(decorView, arrayOfObject);
-            return;
-        } catch(Exception e) {
+        catch(Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -169,7 +183,6 @@ public class SmartBarUtils {
     public static Field GetClassField(Class aClazz, String aFieldName) {
         Field[] declaredFields = aClazz.getDeclaredFields();
         for (Field field : declaredFields) {
-            // 注意：这里判断的方式，是用字符串的比较。很傻瓜，但能跑。要直接返回Field。我试验中，尝试返回Class，然后用getDeclaredField(String fieldName)，但是，失败了
             if (field.getName().equals(aFieldName)) {
                 return field;// define in this class
             }

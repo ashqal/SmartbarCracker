@@ -25,11 +25,13 @@ public class MyActivity extends ActionBarActivity {
         setContentView(R.layout.activity_my);
 
         TextView version = (TextView)this.findViewById(R.id.versionText);
-        version.setText( getString(R.string.author) +  "\nVERSION:" + Utils.GetVersion(this)   );
+        version.setText( getString(R.string.author) +  "\nVERSION:" + Utils.GetVersion(this) + "  " + android.os.Build.MODEL + ","
+                + android.os.Build.VERSION.SDK_INT + ","
+                + android.os.Build.VERSION.RELEASE  );
 
         mCrackerBtn = (Button)this.findViewById(R.id.crackerBtn);
 
-        boolean isSupport = SmartBarUtils.IsFrameworkSport(this,"de.robv.android.xposed.installer");
+        boolean isSupport = SmartBarUtils.IsFrameworkSupport(this,"de.robv.android.xposed.installer");
         if (!isSupport)
         {
             mCrackerBtn.setText( "请下载安装xposed" );
@@ -47,6 +49,11 @@ public class MyActivity extends ActionBarActivity {
         }
 
     }
+    public void onTest(View v2)
+    {
+
+    }
+
 
     public boolean SetupSuccess()
     {
@@ -57,7 +64,10 @@ public class MyActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //getMenuInflater().inflate(R.menu.main, menu);
+        //View;
         return true;
+
     }
 
     @Override
