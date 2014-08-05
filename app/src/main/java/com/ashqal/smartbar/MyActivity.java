@@ -25,7 +25,9 @@ public class MyActivity extends ActionBarActivity {
         setContentView(R.layout.activity_my);
 
         TextView version = (TextView)this.findViewById(R.id.versionText);
-        version.setText( getString(R.string.author) +  "\nVERSION:" + Utils.GetVersion(this) + "  " + android.os.Build.MODEL + ","
+        version.setText( "version:" + Utils.GetVersion(this)
+                + " author:" + getString(R.string.author) + " "
+                + android.os.Build.MODEL + ","
                 + android.os.Build.VERSION.SDK_INT + ","
                 + android.os.Build.VERSION.RELEASE  );
 
