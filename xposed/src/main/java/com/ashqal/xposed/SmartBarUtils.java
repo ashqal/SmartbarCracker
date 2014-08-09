@@ -164,6 +164,19 @@ public class SmartBarUtils {
         }
     }
 
+    public static void SetFieldValue(Object aObject, String aFieldName,Object value) {
+        Field field = GetClassField(aObject.getClass(), aFieldName);// get the field in this object
+        if (field != null) {
+            field.setAccessible(true);
+            try {
+                field.set(aObject,value);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     public static Object GetFieldValue(Object aObject, String aFieldName) {
         Field field = GetClassField(aObject.getClass(), aFieldName);// get the field in this object
         if (field != null) {

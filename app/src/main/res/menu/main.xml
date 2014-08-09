@@ -1,30 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ashqal.leddemo.app.MainActivity" >
-    <!-- 有四种属性，ifRoom,never,withText,always,collapseActionView -->
-    <item android:id="@+id/action_home"
-        android:icon="@drawable/abc_ic_go_search_api_holo_light"
+    tools:context="com.ashqal.smartbar.MainActivity" >
+    <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_list"
-        android:icon="@drawable/abc_ic_go_search_api_holo_light"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom"
-        />
-    <item android:id="@+id/action_map"
-        android:icon="@drawable/abc_ic_go_search_api_holo_light"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom"
-        />
-    <item android:id="@+id/action_user"
-        android:icon="@drawable/abc_ic_go_search_api_holo_light"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom"
-        />
-    <item android:id="@+id/action_more"
-        android:icon="@drawable/abc_ic_menu_moreoverflow_normal_holo_light"
-        android:title="@string/action_settings"
-        app:showAsAction="always"
-        />
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 </menu>

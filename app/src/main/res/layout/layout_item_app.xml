@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/selector_list_bg"
+    >
+
+    <ImageView
+        android:id="@+id/app_icon"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:layout_centerVertical="true"
+        android:padding="15dp"/>
+    <TextView
+        android:id="@+id/app_name"
+        android:text="@string/title_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/app_icon"
+        />
+    <ImageView
+        android:id="@+id/app_anchor"
+        android:src="@drawable/dropdown_ic_arrow_disabled_holo_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+    <TextView
+        android:id="@+id/app_op"
+        android:textColor="@color/littledark"
+        android:text="@string/op_smart"
+        android:paddingRight="25dp"
+        android:paddingBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

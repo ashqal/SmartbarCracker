@@ -1,1 +1,1 @@
-include ':app', ':xposed'
+include ':app', ':xposed', ':libviewpagerindicator'

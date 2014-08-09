@@ -10,6 +10,8 @@ import android.os.Build;
 import android.view.View;
 import android.view.Window;
 
+import com.ashqal.xposed.models.SmartOptions;
+
 import java.io.DataOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -98,5 +100,19 @@ public class Utils {
             }
             return false;
         }
+    }
+
+    public static int DisplayName(SmartOptions op)
+    {
+        switch (op)
+        {
+            case HIDE:
+                return R.string.op_hidden;
+            case IGNORE:
+                return R.string.op_ignore;
+            case SMART:
+                return R.string.op_smart;
+        }
+        return R.string.op_smart;
     }
 }

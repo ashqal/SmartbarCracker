@@ -19,12 +19,12 @@
         android:onClick="onCracker"
         />
 
-    <!--<Button-->
-        <!--android:text="@string/crack"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="onTest"-->
-        <!--/>-->
+    <Button
+        android:text="@string/crack"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onTest"
+        />
 
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:text="@string/acknowledge"
+        android:text="@string/acknowledge_1_2"
         android:gravity="center"
         android:textColor="#FFCCCCCC"
         android:paddingBottom="10dp"

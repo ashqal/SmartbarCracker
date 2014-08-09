@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="red">#ffcc0000</color>
+    <color name="orange">#ffffda00</color>
+    <color name="white">#ffeeeeee</color>
+    <color name="green">#ff339933</color>
+    <color name="blue">#ff1d8de0</color>
+    <color name="deepdark">#ff434343</color>
+    <color name="dark">#ff828282</color>
+    <color name="littledark">#ffaaaaaa</color>
+    <color name="littlegray">#ffeeeeee</color>
+    <color name="alpha">#00000000</color>
+    <color name="black_overlay">#66000000</color>
+
+</resources>

@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ashqal.smartbar.MainActivity" >
+    <item android:id="@+id/action_hidden"
+        android:title="@string/op_hidden"
+        app:showAsAction="never"
+        />
+    <item android:id="@+id/action_ignore"
+        android:title="@string/op_ignore"
+        app:showAsAction="never"
+        />
+    <item android:id="@+id/action_smart"
+        android:title="@string/op_smart"
+        app:showAsAction="never"
+        />
+</menu>

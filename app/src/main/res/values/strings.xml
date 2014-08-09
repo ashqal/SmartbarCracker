@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Smart</string>
     <string name="crack">去掉smartbar</string>
     <string name="restore">恢复smartbar</string>
     <string name="action_settings">Settings</string>
     <string name="version_unknown">未知版本号</string>
     <string name="author">ashqal</string>
-    <string name="acknowledge">acknowledge:@绝世神婊在新疆,@安仔pen,@逗货马小克,@非喜剧少年,@yFanss,@Dante丁强,@夏末的芒果</string>
+    <string name="acknowledge_1_2">version 1.2 beta\n@绝世神婊在新疆,@安仔pen,@逗货马小克,@非喜剧少年,@yFanss,@Dante丁强,@夏末的芒果</string>
+    <string name="acknowledge_2_0">version 2.0\n@细雨含春,@安仔pen,@逗货马小克,@非喜剧少年,@屌丝陈世美,@Madman攀,@-最冷yi天,@東小瓜V,@阿荣A_r,@清晨-日出</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_setup">启用模块</string>
+    <string name="title_setting">设置</string>
+    <string name="title_more">更多</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="more_version">版本信息</string>
+    <string name="more_acknowledge">感谢</string>
+    <string name="more_feedback">反馈</string>
+    <string name="more_opensource">开源</string>
+    <string name="more_license">License</string>
+
+    <string name="feedback">http://weibo.com/ashqal</string>
+    <string name="opensource">https://github.com/ashqal/SmartbarCracker</string>
+    <string name="license">this project is available under the MIT license.</string>
+
+    <string name="op_hidden">关闭smartbar</string>
+    <string name="op_ignore">打开smartbar</string>
+    <string name="op_smart">智能模式</string>
+
 </resources>
