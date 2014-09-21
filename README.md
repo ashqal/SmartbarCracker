@@ -1,13 +1,12 @@
-SmartbarCracker
+Smart Verison 2.0
 ===============
 
-Smart for meizu mx3, use it to display smartbar or to hide smartbar
+Smart for meizu mx2/mx3, use it to display smartbar or to hide smartbar
 
 NOTICE
 =======
 * need xposed support
 * author ashqal
-* inspired by http://garth.im/2014/04/decompile-app-to-disappear-smartbar/
 
 License
 =======
