@@ -13,7 +13,11 @@ import com.ashqal.smartbar.R;
 import com.ashqal.smartbar.Utils;
 import com.ashqal.xposed.models.SmartOptions;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -93,8 +97,15 @@ public class AppItemAdapter extends BaseAdapter
 
     }
 
+    public void sort()
+    {
 
-    public static class AppItem {
+        Collections.sort(ITEMS);
+    }
+
+
+    public static class AppItem implements Comparable {
+        private final Collator com;
         private String mPackgeName;
         private String mAppName;
         private Drawable mIcon;
@@ -109,6 +120,7 @@ public class AppItemAdapter extends BaseAdapter
             this.mIcon = icon;
             this.mOption = SmartOptions.SMART;
             this.mTempOption = mOption;
+            com = Collator.getInstance(java.util.Locale.CHINA);
         }
 
 
@@ -169,6 +181,14 @@ public class AppItemAdapter extends BaseAdapter
         @Override
         public String toString() {
             return mAppName;
+        }
+
+        @Override
+        public int compareTo(Object another)
+        {
+            AppItem appAnother = (AppItem) another;
+            if( another == null || appAnother == null ) return 1;
+            return com.compare(this.getAppName(),appAnother.getAppName());
         }
     }
 }

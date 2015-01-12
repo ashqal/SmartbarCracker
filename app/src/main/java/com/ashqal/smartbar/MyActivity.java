@@ -1,11 +1,10 @@
 package com.ashqal.smartbar;
 
-import android.app.ActionBar;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.widget.ActionBarContainer;
-import android.support.v7.internal.widget.ActionBarView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,11 +16,16 @@ import android.widget.TextView;
 
 import com.ashqal.xposed.SmartBarUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class MyActivity extends ActionBarActivity {
 
     private Button mCrackerBtn;
     private int mStep;
+    public static final String PATTERN = "[^\\da-zA-Z_]*";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,10 +34,18 @@ public class MyActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_my);
 
+
+        Pattern pt = Pattern.compile(PATTERN);
+        Matcher m = pt.matcher(Build.DEVICE + "_" + Build.DISPLAY);
+        String result = m.replaceAll("");
+
+
         TextView version = (TextView)this.findViewById(R.id.versionText);
         version.setText( "version:" + Utils.GetVersion(this)
                 + " author:" + getString(R.string.author) + " "
+                + result + ","
                 + android.os.Build.MODEL + ","
+                + Build.DISPLAY + ","
                 + android.os.Build.VERSION.SDK_INT + ","
                 + android.os.Build.VERSION.RELEASE  );
 
@@ -52,7 +64,7 @@ public class MyActivity extends ActionBarActivity {
         }
         if (SetupSuccess())
         {
-            mCrackerBtn.setText( "安装成功,enjoy it." );
+            mCrackerBtn.setText( "安装成功,enjoy it.." );
             mStep = 2;
         }
 
@@ -61,12 +73,29 @@ public class MyActivity extends ActionBarActivity {
     public void onTest(View v2)
     {
         //MzActionBarContainer
-//        ActionBar ab = getActionBar();
-//        Object mActionView =  SmartBarUtils.GetFieldValue(ab, "mActionView");
-//        FrameLayout mSplitView = (FrameLayout) SmartBarUtils.GetFieldValue(mActionView, "mSplitView");
-//        SmartBarUtils.HideV2(mSplitView);
-        ActionBarView mActionView = (ActionBarView) SmartBarUtils.GetFieldValue(getActionBar(), "mActionView");
-        mActionView.setMenu(null,null);
+        Window window = getWindow();
+        View v = window.getDecorView();
+        //v.setVisibility(View.GONE);
+        Object[] views =  (Object[])SmartBarUtils.GetFieldValue(v,"mChildren");
+        View actionbarOverlayLayout = (View)views[0];
+        FrameLayout mActionBarBottom = (FrameLayout)SmartBarUtils.GetFieldValue(actionbarOverlayLayout,"mActionBarBottom");
+        //mActionBarBottom.setVisibility(View.GONE);
+       //SmartBarUtils.HideV2(mActionBarBottom);
+
+
+        SmartBarUtils.Hide(v);
+        //View mMzActionBar = (View)views[2];
+        //mMzActionBar.setVisibility(View.GONE);
+        //SmartBarUtils.HideV2(mActionBarBottom);
+        //mActionBarBottom.setBackground();
+        //mActionBarBottom.setBackgroundColor(R.color.green);
+
+        //ActionBar ab = getActionBar();
+        //Object mActionView =  SmartBarUtils.GetFieldValue(ab, "mActionView");
+        //FrameLayout mSplitView = (FrameLayout) SmartBarUtils.GetFieldValue(mActionView, "mSplitView");
+        //SmartBarUtils.HideV2(mSplitView);
+        //ActionBarView mActionView = (ActionBarView) SmartBarUtils.GetFieldValue(getActionBar(), "mActionView");
+        //mActionView.setMenu(null,null);
 
     }
 

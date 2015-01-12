@@ -1,6 +1,12 @@
 package com.ashqal.xposed;
 
+import android.content.res.XResources;
+import android.graphics.Color;
 import android.view.Menu;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.ashqal.xposed.hooks.HiddenAttachedToWindowHook;
 import com.ashqal.xposed.hooks.HiddenCreatePanelMenuHook;
@@ -16,10 +22,17 @@ import com.ashqal.xposed.models.SmartContext;
 import com.ashqal.xposed.models.SmartOptions;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
+import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.callbacks.XC_InitPackageResources;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -29,8 +42,18 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 /**
  * Created by ashqal on 14-8-2.
  */
-public class XposedInterface implements IXposedHookLoadPackage
+public class XposedInterface implements IXposedHookLoadPackage,IXposedHookInitPackageResources
 {
+
+
+    @Override
+    public void handleInitPackageResources(XC_InitPackageResources.InitPackageResourcesParam resparam) throws Throwable {
+        //XposedBridge.log("[com.ashqal.smartbar.xposed] handleInitPackageResources:" + resparam.packageName);
+
+    }
+
+
+
 
     private boolean debug = false;
 
@@ -38,25 +61,65 @@ public class XposedInterface implements IXposedHookLoadPackage
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable
     {
 
-        XposedBridge.log("[com.ashqal.smartbar.xposed] handleLoadPackage" + loadPackageParam.packageName);
-        ApplicationCreateHook appCreateHook = new ApplicationCreateHook(loadPackageParam);
+        //XposedBridge.log("[com.ashqal.smartbar.xposed] handleLoadPackage" + loadPackageParam.packageName);
+        //ApplicationCreateHook appCreateHook = new ApplicationCreateHook(loadPackageParam);
 
-        if (loadPackageParam.packageName.contains("com.android.")
-             || loadPackageParam.packageName.contains("com.meizu.")
-           )
+
+        if(loadPackageParam.packageName.equals("com.android.systemui"))
         {
-            XposedBridge.log("[com.ashqal.smartbar.xposed] system app ,return. " + loadPackageParam.packageName);
-            return;
+            final ExecutorService executor = Executors.newFixedThreadPool(2);
+            final Runnable runable = new Runnable() {
+                @Override
+                public void run() {
+                    SmartBarUtils.Exec("input keyevent 82");
+                }
+            };
+            findAndHookMethod("com.android.systemui.statusbar.policy.Clock", loadPackageParam.classLoader, "updateClock", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    TextView tv = (TextView) param.thisObject;
+
+                    if( tv.isClickable() == false )
+                    {
+                        tv.setClickable(true);
+                        tv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //XposedBridge.log("[com.ashqal.smartbar.xposed]menu onClick 82!!!!!!!!!" );
+                                executor.execute(runable);
+                            }
+                        });
+                    }
+
+                }
+            });
         }
-        hookSmartSetup(loadPackageParam);
-
-
+        if (loadPackageParam.packageName.contains("com.ashqal.smartbar"))
+            hookSmartSetup(loadPackageParam);
 
         //public final int copyFrom(LayoutParams o)
         if( debug )
         {
             return;
         }
+
+
+
+        if (loadPackageParam.packageName.contains("com.android.")
+             || loadPackageParam.packageName.contains("com.meizu.")
+           )
+        {
+            //XposedBridge.log("[com.ashqal.smartbar.xposed] system app ,return. " + loadPackageParam.packageName);
+            return;
+        }
+
+
+
+
+
+
+
+
 
         if ( !ConfigManager.Instance().load() )
         {
@@ -112,12 +175,8 @@ public class XposedInterface implements IXposedHookLoadPackage
 
     }
 
-//    private void hookApplicationCreate(final XC_LoadPackage.LoadPackageParam loadPackageParam
-//    ,XC_MethodHook methodHook)
-//    {
-//        findAndHookMethod("android.app.Application", loadPackageParam.classLoader, "onCreate"
-//                ,methodHook);
-//    }
+
+
 
     private static class ApplicationCreateHook extends XC_MethodHook
     {

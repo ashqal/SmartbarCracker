@@ -119,6 +119,7 @@ public class SettingFragment extends ListFragment implements PopupMenu.OnMenuIte
                 }
 
             }
+            mAdapter.sort();
         }
 
         getActivity().runOnUiThread(new Runnable() {
@@ -205,7 +206,8 @@ public class SettingFragment extends ListFragment implements PopupMenu.OnMenuIte
                 mModifyList.remove(mModifyingItem.getPackgeName());
             }
 
-            mActionMode.setTitle("保存"  + mModifyList.size() + "项修改?");
+            if ( mActionMode != null )
+                mActionMode.setTitle("保存"  + mModifyList.size() + "项修改?");
 
             return true;
         }

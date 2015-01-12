@@ -7,8 +7,8 @@ android {
         applicationId "com.ashqal.smartbar"
         minSdkVersion 11
         targetSdkVersion 19
-        versionCode 4
-        versionName "2.0"
+        versionCode 5
+        versionName "2.1"
     }
     buildTypes {
         release {

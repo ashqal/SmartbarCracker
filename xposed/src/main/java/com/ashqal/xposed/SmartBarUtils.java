@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -194,12 +197,15 @@ public class SmartBarUtils {
 
 
     public static Field GetClassField(Class aClazz, String aFieldName) {
-        Field[] declaredFields = aClazz.getDeclaredFields();
-        for (Field field : declaredFields) {
-            if (field.getName().equals(aFieldName)) {
-                return field;// define in this class
-            }
+
+        try {
+            Field field = aClazz.getDeclaredField(aFieldName);
+            return field;
+        } catch (NoSuchFieldException e) {
+            //e.printStackTrace();
+
         }
+
 
         Class superclass = aClazz.getSuperclass();
         if (superclass != null) {// 简单的递归一下
@@ -225,34 +231,37 @@ public class SmartBarUtils {
         }
     }
 
-    public static boolean Exec(String[] cmds)
+    public static String Exec(String cmd)
     {
-        Process process = null;
-        DataOutputStream os = null;
+        Process p = null;
+        String output = "";
+        BufferedReader reader = null;
         try {
-            process = Runtime.getRuntime().exec("su"); //切换到root帐号
-            os = new DataOutputStream(process.getOutputStream());
-
-            for ( int i = 0 ; i < cmds.length; i++ )
+            p = Runtime.getRuntime().exec(cmd);
+            reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String result = null;
+            while ( (result = reader.readLine()) != null )
             {
-                os.writeBytes(cmds[i] + "\n");
+                output += result;
             }
+            p.waitFor();
 
-            os.writeBytes("exit\n");
-            os.flush();
-            process.waitFor();
-        } catch (Exception e) {
-            return false;
-        } finally {
-            try {
-                if (os != null) {
-                    os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally
+        {
+            if (p!= null) p.destroy();
+            if ( reader != null )
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                process.destroy();
-            } catch (Exception e) {
-            }
         }
-        return true;
+
+        return output;
     }
 
     private static boolean HasSmartBar() {
